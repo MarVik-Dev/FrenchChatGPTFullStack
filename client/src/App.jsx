@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ChatBody from "./components/ChatBody";
 import ChatInput from "./components/ChatInput";
 import { useMutation } from "react-query";
 import { fetchResponse } from "./api";
 
+
 function App() {
   const [chat, setChat] = useState([]);
+
+  const inputRef = useRef();
 
   const mutation = useMutation({
     mutationFn: () => {
@@ -23,28 +26,38 @@ function App() {
     mutation.mutate();
   };
 
+    // For textArea autofocus
+    useEffect(() => {
+      inputRef.current.focus();
+    }, [chat]);
+
   return (
-    <div className="bg-[#1A232E] h-screen py-6 relative sm:px-16 px-12 text-white overflow-hidden flex flex-col justify-between align-middle">
-      {/* Gradients */}
-      <div className="gradient-01 z-0 absolute" />
-      <div className="gradient-02 z-0 absolute" />
+    <div className="bg-[#1A232E] h-screen py-6 relative sm:px-16 px-12 text-white overflow-hidden flex flex-col justify-between  align-middle">
+      {/* gradients */}
+      <div className="gradient-01 z-0 absolute"></div>
+      <div className="gradient-02 z-0 absolute"></div>
 
       {/* header */}
-      <div className="uppercase font-bold text-2xl text-center mb-3">
+      <div className="uppercase font-bold  text-2xl text-center mb-3">
         Discuter avec ChatGPT en Français !
-      </div>
+        </div>
 
-      {/* body */}
-      <div className="h-[90%] overflow-auto w-full max-w-4xl min-w-[20rem] py-8 px-4 self-center scrollbar-thumb-slate-400 scrollbar-thin scrollbar-track-gray-transparent scrollbar-thumb-rounded-md">
-        <ChatBody chat={chat} />
-      </div>
+{/* body */}
+<div
+  className="h-[90%] overflow-auto w-full max-w-4xl min-w-[20rem] py-8 px-4 self-center
+scrollbar-thumb-slate-400 scrollbar-thin scrollbar-track-gray-tranparent scrollbar-thumb-rounded-md
+"
+// ref={inputRefTxt}
+>
+  <ChatBody chat={chat}  />
+</div>
 
-      {/* input */}
-      <div className="w-full max-w-4xl min-w-[20rem] self-center">
-        <ChatInput sendMessage={sendMessage} loading={mutation.isLoading} />
-      </div>
-    </div>
-  );
+{/* input */}
+<div className="w-full max-w-4xl min-w-[20rem] self-center">
+  <ChatInput sendMessage={sendMessage} loading={mutation.isLoading} autoFocus={inputRef}/>
+</div>
+</div>
+);
 }
 
 export default App;
