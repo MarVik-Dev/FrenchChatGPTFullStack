@@ -1,30 +1,86 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import autoAnimate from "@formkit/auto-animate";
 
-const ChatBody = () => {
-  const aiStyle = "bg-white bg-opacity-40 background-blur-lg dropshadow-md mr-auto";
+const ChatBody = ({ chat }) => {
+  const aiStyle =
+    "bg-white bg-opacity-40 background-blur-lg dropshadow-md mr-auto";
+
+  const parent = useRef(null)
+  const bottomRef = useRef(null)
+
+  // For animation
+  useEffect(() => {
+parent.current && autoAnimate(parent.current)
+  },[parent])
+
+  // For scrolling
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({behavior:"smooth"})
+  }, [chat])
+
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" ref={parent}>
       {/* Client Message */}
-      <div
-        className="border-[#999999] break-words border-2 rounded-xl self-end px-3 py-3 max-w-[80%]"
-      >
-        <pre className="whitespaces-pre-wrap">
-          <span>Salut Chat GPT, Tu peux m'aider ? </span>
-        </pre>
-      </div>
-
-      {/* AI Message */}
-      <div
-        className={`border-[#999999] break-words border-2 rounded-xl self-end px-3 py-3 max-w-[80%]>
-        <pre className="whitespaces-pre-wrap ${aiStyle}
-        `}>
-        <pre>
-          <span>Salut utilisateur, En quoi puis-je t'aider ? </span>
-        </pre>
-      </div>
+      {chat.map((message, i) => {
+        return (
+          <div key={i} className={`border-[#999999] break-words border-2 rounded-xl self-end px-3 py-3 max-w-[80%] ${message.sender === "ai" && aiStyle}`}>
+            <pre className="whitespace-pre-wrap">
+              <span>{message.message} </span>
+            </pre>
+          </div>
+        );
+      })}
+      <div ref={bottomRef} className="h-3"></div>
     </div>
   );
 };
 
 export default ChatBody;
+
+
+// import React, { useRef } from "react";
+// // import autoAnimate from "@formkit/auto-animate";
+// import { useEffect } from "react";
+
+
+// const ChatBody = ({ chat }) => {
+//   const aiStyle =
+//     "bg-white bg-opacity-40 backdrop-blur-lg dropshadow-md mr-auto";
+
+//     const parent = useRef(null);
+//     const bottomRef = useRef(null);
+
+//     // only for aut animations
+//     // useEffect(()=>{
+//     //     parent.current && autoAnimate(parent.current);
+//     // }, [parent])
+
+//     //for scrolling bottom
+//     useEffect(()=>{
+//         bottomRef.current?.scrollIntoView({behavior: "smooth"})
+//     }, [chat])
+
+//   return (
+//     <div className="flex flex-col gap-4" ref={parent}>
+//       {chat.map((message, i) => {
+//         return (
+//           <div
+//             key={i}
+//             className={`border-[#999999] break-words border-2 rounded-xl self-end px-3 py-3 max-w-[80%] ${
+//               message.sender === "ai" && aiStyle
+//             }`}
+//           >
+//             <pre className="whitespace-pre-wrap">
+//               <span>{message.message}</span>
+//             </pre>
+//           </div>
+//         );
+//       })}
+
+//       <div ref={bottomRef} className="h-3"></div>
+//     </div>
+//   );
+// };
+
+// export default ChatBody;
