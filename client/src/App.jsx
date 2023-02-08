@@ -31,7 +31,7 @@ function App() {
 
       {/* header */}
       <div className="uppercase font-bold text-2xl text-center mb-3">
-        ChatGPT
+        Discuter avec ChatGPT en Français !
       </div>
 
       {/* body */}
