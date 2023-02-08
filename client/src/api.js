@@ -4,6 +4,7 @@ export const fetchResponse =  async(chat) => {
       // after deployment 'https://french-chat-gpt-full-stack.vercel.app/'
       const response = await fetch('https://french-chat-gpt-full-stack.vercel.app/', { 
           method: 'POST',
+          mode: 'no-cors',
           headers: {
               "Content-Type": "application/json"
           },
